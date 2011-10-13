@@ -1,13 +1,14 @@
 package gtardif.mowitnow;
 
+import static com.google.common.base.Preconditions.*;
 import static com.google.common.collect.Lists.*;
 import static gtardif.mowitnow.Command.*;
 import static gtardif.mowitnow.Direction.*;
+import static java.lang.Integer.*;
 import static org.apache.commons.lang.StringUtils.*;
 import java.util.List;
 import java.util.Map;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -52,14 +53,14 @@ public class Mower {
 	}
 
 	public static Mower readConfig(String position, String commandChars, int lawnWidth, int lawnHeight) {
-		Preconditions.checkArgument(position.matches("[0-9]* [0-9]* [NEWS]"), "mower position must be of the form X Y Direction");
-		Preconditions.checkArgument(commandChars.matches("[GDA]*"), "Commands must be one of G, D, A");
+		checkArgument(position.matches("[0-9]* [0-9]* [NEWS]"), "mower position must be of the form X Y Direction");
+		checkArgument(commandChars.matches("[GDA]*"), "Commands must be one of G, D, A");
 		String[] config = split(position, ' ');
 		List<Command> commands = newArrayList();
 		for (char c : commandChars.toCharArray()) {
 			commands.add(COMMANDS_BY_NAME.get(c));
 		}
-		return new Mower(Integer.parseInt(config[0]), Integer.parseInt(config[1]), DIRECTIONS_BY_NAME.get(config[2]), commands, lawnWidth, lawnHeight);
+		return new Mower(parseInt(config[0]), parseInt(config[1]), DIRECTIONS_BY_NAME.get(config[2]), commands, lawnWidth, lawnHeight);
 	}
 
 	public void step() {
@@ -116,12 +117,8 @@ public class Mower {
 		}
 	}
 
-	public boolean hasCommands() {
-		return !commands.isEmpty();
-	}
-
 	public void mow() {
-		while (hasCommands()) {
+		while (!commands.isEmpty()) {
 			step();
 		}
 	}

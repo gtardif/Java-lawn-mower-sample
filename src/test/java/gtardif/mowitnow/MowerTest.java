@@ -91,12 +91,6 @@ public class MowerTest {
 	}
 
 	@Test
-	public void canCheckIfHasCommands() {
-		assertThat(new Mower(0, 0, NORTH, newArrayList(LEFT), 10, 10).hasCommands()).isTrue();
-		assertThat(new Mower(0, 0, NORTH, EMPTY_COMMANDS, 10, 10).hasCommands()).isFalse();
-	}
-
-	@Test
 	public void canExecuteAllCommands() {
 		Mower mower = new Mower(3, 4, NORTH, newArrayList(ADVANCE, LEFT, ADVANCE), 10, 10);
 		mower.mow();
